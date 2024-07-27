@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom scrollbar styles for WebKit browsers */
+.custom-scrollbar {
+  overflow: auto;
+}
+
+/* Hide scrollbar track */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 2px; /* Adjust the width as needed */
+  height: 8px; /* Adjust the height as needed for horizontal scrollbars */
+  transition: .5s ease;
+}
+
+.custom-scrollbar:hover::-webkit-scrollbar{
+  width: 4px;
+}
+
+/* Customize the scrollbar thumb (the draggable part) */
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3); /* Set color of the scrollbar thumb */
+  border-radius: 10px; /* Make the thumb rounded */
+}
+
+/* Optional: Customize the scrollbar track (the area the thumb moves within) */
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent; /* Set track background color to transparent */
+}
