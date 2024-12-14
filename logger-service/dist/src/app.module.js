@@ -12,13 +12,24 @@ const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const mongoose_1 = require("@nestjs/mongoose");
 const event_schema_1 = require("./schemas/event.schema");
+const config_1 = require("@nestjs/config");
+const configuration_1 = require("../config/configuration");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            mongoose_1.MongooseModule.forRoot("mongodb+srv://admin:admin@atlascluster.brfzfhn.mongodb.net/microservices?retryWrites=true&w=majority&appName=AtlasCluster"),
+            config_1.ConfigModule.forRoot({
+                load: [configuration_1.default]
+            }),
+            mongoose_1.MongooseModule.forRootAsync({
+                imports: [config_1.ConfigModule],
+                inject: [config_1.ConfigService],
+                useFactory: (configService) => ({
+                    uri: configService.get("DATABASE_URL")
+                })
+            }),
             mongoose_1.MongooseModule.forFeature([{ name: event_schema_1.EventLog.name, schema: event_schema_1.EventLogSchema }])
         ],
         controllers: [app_controller_1.AppController],

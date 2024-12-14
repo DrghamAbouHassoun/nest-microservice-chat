@@ -3,10 +3,21 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { EventLog, EventLogSchema } from './schemas/event.schema';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import configuration from 'config/configuration';
 
 @Module({
   imports: [
-    MongooseModule.forRoot("mongodb+srv://admin:admin@atlascluster.brfzfhn.mongodb.net/microservices?retryWrites=true&w=majority&appName=AtlasCluster"),
+    ConfigModule.forRoot({
+      load: [configuration]
+    }),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        uri: configService.get<string>("DATABASE_URL")
+      })
+    }),
     MongooseModule.forFeature([{ name: EventLog.name, schema: EventLogSchema }])
   ],
   controllers: [AppController],
